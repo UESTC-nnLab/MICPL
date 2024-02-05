@@ -11,7 +11,7 @@ class opts(object):
     def __init__(self):
         self.parser = argparse.ArgumentParser()
         # basic experiment setting
-        self.parser.add_argument('--model_name', default='MICML',
+        self.parser.add_argument('--model_name', default='MICPL',
                                  help='name of the model.')
         self.parser.add_argument('--load_model', default='',
                                  help='path to pretrained model')

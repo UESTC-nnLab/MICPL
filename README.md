@@ -1,15 +1,15 @@
-# MICML: Motion-Inspired Cross-Modal Learning for Small Object Detection in Satellite Videos
+# MICPL: Motion-Inspired Cross-Pattern Learning for Small Object Detection in Satellite Videos
 
 ![outline](./method.jpg)
 
 ## Introduction
-In small object detection, single modality can only provide a limited support to features learning. Most of prior methods mainly depend on a single vision modality to learn object features, seldom considering latent motion modality. However in real world, humans often efficiently perceive objects by multi-modal signals. Inspired by this observation, this paper attempts to tackle small object detection from a new prospective of latent modality learning. To fulfil this purpose, it regards a real-world moving object as the spatio-temporal sequences of a static object to capture latent motion modality. In view of this, we propose the motion-inspired cross-modal learning (MICML) scheme to capture motion modality, so as to adapt to moving small object scenarios. This scheme mainly consists of two crucial parts: motion pattern mining and motion-vision adapter. The former is designed to mine the motion pattern from time-dependent representation space. While the latter is devised to correlate between motion patterns and vision semantics. And then, we explore their cross-modal interactions to guide MICML to effectively capture motion modality.
+For small object detection, vision pattern can only provide a limited support to feature learning. Most prior schemes mainly depend on a single vision pattern to learn object features, seldom considering more latent motion patterns. In real world, humans often efficiently perceive small objects through multi-pattern signals. Inspired by this observation, this paper attempts to address small object detection from a new prospective of latent pattern learning. To fulfill this purpose, it regards a real-world moving object as the spatio-temporal sequences of a static object to capture latent motion patterns. In view of this, we propose a Motion-Inspired Cross-Pattern Learning (MICPL) scheme to capture the motion patterns for moving small object scenarios.
 
 
 
 ## Datasets
 
-- Satellite videos are available at [DSFNet](https://github.com/ChaoXiao12/Moving-object-detection-DSFNet) and [VISO](https://github.com/qingyonghu/viso).
+- Satellite videos are available at [DSFNet](https://github.com/ChaoXiao12/Moving-object-detection-DSFNet) or [VISO](https://github.com/qingyonghu/viso).
 - DroneCrowd dataset and baseline model: download from [DroneCrowd](https://github.com/VisDrone/DroneCrowd).
 
 
@@ -23,7 +23,7 @@ In small object detection, single modality can only provide a limited support to
 
 ### Train
 ```python
-python train.py --model_name MICML \
+python train.py --model_name MICPL \
 		--gpus 0,1 \
 		--lr 1.25e-4 \
 		--lr_step 30,45 \
@@ -37,7 +37,7 @@ python train.py --model_name MICML \
 
 ### Test and visulization
 ```python
-python test.py --model_name MICML \
+python test.py --model_name MICPL \
                --gpus 0 \
                --load_model {checkpoint path} \
                --test_large_size True \

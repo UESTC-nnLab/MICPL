@@ -622,7 +622,7 @@ class DLASeg(nn.Module):
         return [z]
     
     
-def MICML(heads, head_conv=128):
+def MICPL(heads, head_conv=128):
     model = DLASeg(heads,final_kernel=1,
                  head_conv=head_conv)
     return model
