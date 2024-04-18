@@ -4,12 +4,12 @@ from __future__ import print_function
 
 import torch
 from thop import profile
-from lib.models.MICML import MICML
+from lib.models.MICPL import MICPL
 
 
 def model_lib(model_chose):
     model_factory = {
-                     'MICML': MICML, 
+                     'MICPL': MICPL, 
                      }
     return model_factory[model_chose]
 
