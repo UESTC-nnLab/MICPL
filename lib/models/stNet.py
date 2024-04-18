@@ -89,7 +89,7 @@ def save_model(path, epoch, model, optimizer=None):
 if __name__ == '__main__':
     torch.backends.cudnn.enabled = True
     heads = {'hm': 1, 'wh': 2, 'reg': 2}
-    model_nameAll = ['MICML']
+    model_nameAll = ['MICPL']
     device = 'cuda:0'
 
     out = {}
