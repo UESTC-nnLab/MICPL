@@ -1,0 +1,9 @@
+pytorch
+opencv-python
+Cython
+numba
+progress
+matplotlib
+easydict
+scipy
+numpy
