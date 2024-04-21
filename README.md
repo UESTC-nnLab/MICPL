@@ -24,7 +24,6 @@ For small object detection, vision pattern can only provide a limited support to
 ### Train
 ```python
 python train.py --model_name MICPL \
-		--load_model ./lib/model/backbone.pth \
 		--gpus 0,1 \
 		--lr 1.25e-4 \
 		--lr_step 30,45 \
@@ -33,6 +32,7 @@ python train.py --model_name MICPL \
 		--val_intervals 5 \ 
 		--test_large_size True \
 		--datasetname  {dataset name} \
+		--load_model ./lib/model/pre-trained.pth \
 		--data_dir {dataset path}
 ```
 
