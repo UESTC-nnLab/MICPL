@@ -102,7 +102,6 @@ class Motion(nn.Module):
         seq_len = input_tensor.size(1)
         cur_layer_input = input_tensor
         
-        #-----------------Motion Pattern Mining-----------------#
         for layer_idx in range(self.num_layers):
             h, c = hidden_state[layer_idx]
             output_inner = []
@@ -131,7 +130,6 @@ class Motion(nn.Module):
                 motion_feat = self.se2(motion_feat).view(batch_size*channal,-1) 
                 motion_feat = self.w0(motion_feat).view(batch_size,channal,-1) 
                 
-                #-----------------Motion-Vision Adapter-----------------#
                 motion = []
                 for i in range(batch_size):
                     node = self.w1(node_feat[i]).view(channal,-1) 
