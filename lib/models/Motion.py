@@ -5,31 +5,23 @@ import numpy as np
 
 
 class MotionCell(nn.Module):
-
     def __init__(self, input_dim, hidden_dim, kernel_size, bias):
-        
-
         super(MotionCell, self).__init__()
 
         self.input_dim = input_dim
         self.hidden_dim = hidden_dim
-
         self.kernel_size = kernel_size
         self.padding = kernel_size[0] // 2, kernel_size[1] // 2
         self.bias = bias
-
         self.conv = nn.Conv2d(in_channels=self.input_dim + self.hidden_dim,
                               out_channels=4 * self.hidden_dim,
                               kernel_size=self.kernel_size,
                               padding=self.padding,
                               bias=self.bias) 
-        
 
     def forward(self, input_tensor, cur_state):
         h_cur, c_cur = cur_state 
-        
         combined = torch.cat([input_tensor, h_cur], dim=1)  
-        
         combined_conv = self.conv(combined) 
    
         cc_i, cc_f, cc_o, cc_g = torch.split(combined_conv, self.hidden_dim, dim=1)
@@ -50,13 +42,11 @@ class MotionCell(nn.Module):
 
 
 class Motion(nn.Module):
-
     def __init__(self, input_dim, hidden_dim, kernel_size, num_layers,
                  batch_first=True, bias=True, return_all_layers=False):
         super(Motion, self).__init__()
 
         self._check_kernel_size_consistency(kernel_size)
-
         kernel_size = self._extend_for_multilayer(kernel_size, num_layers)
         hidden_dim = self._extend_for_multilayer(hidden_dim, num_layers)
         if not len(kernel_size) == len(hidden_dim) == num_layers:
@@ -69,19 +59,16 @@ class Motion(nn.Module):
         self.batch_first = batch_first
         self.bias = bias
         self.return_all_layers = return_all_layers
-        
 
         cell_list = []
         for i in range(0, self.num_layers):
             cur_input_dim = self.input_dim if i == 0 else self.hidden_dim[i - 1]
-
             cell_list.append(MotionCell(input_dim=cur_input_dim,
                                           hidden_dim=self.hidden_dim[i],
                                           kernel_size=self.kernel_size[i],
                                           bias=self.bias))
 
         self.cell_list = nn.ModuleList(cell_list)
-        
         self.cell_list2 = nn.ModuleList(cell_list) 
         self.maxpool = nn.AdaptiveMaxPool2d(input_dim)
         self.w0 = nn.Linear(input_dim*input_dim, input_dim)
@@ -115,9 +102,8 @@ class Motion(nn.Module):
         seq_len = input_tensor.size(1)
         cur_layer_input = input_tensor
         
+        #-----------------Motion Pattern Mining-----------------#
         for layer_idx in range(self.num_layers):
-        
-            #-----------------Motion Pattern Mining-----------------#
             h, c = hidden_state[layer_idx]
             output_inner = []
             for t in range(seq_len): 
