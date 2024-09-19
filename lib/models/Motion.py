@@ -103,34 +103,26 @@ class Motion(nn.Module):
         if not self.batch_first:
             # (t, b, c, h, w) -> (b, t, c, h, w)
             input_tensor = input_tensor.permute(1, 0, 2, 3, 4)
-
         b, _, _, h, w = input_tensor.size()
 
-        
         if hidden_state is not None:
             raise NotImplementedError()
         else:
-            
             hidden_state = self._init_hidden(batch_size=b,
                                              image_size=(h, w))
-
         layer_output_list = []
         last_state_list = []
-        
         seq_len = input_tensor.size(1)
         cur_layer_input = input_tensor
         
         for layer_idx in range(self.num_layers):
-            
+        
             #-----------------Motion Pattern Mining-----------------#
-
             h, c = hidden_state[layer_idx]
             output_inner = []
             for t in range(seq_len): 
-                
                 h, c = self.cell_list[layer_idx](input_tensor=cur_layer_input[:, t, :, :, :],
                                                  cur_state=[h, c])
-                
                 h_t = []
                 batch_size = h.shape[0]
                 channal = h.shape[1]
@@ -139,7 +131,6 @@ class Motion(nn.Module):
                 
                 node_feat = self.maxpool(h)
                 node_feat = self.se1(node_feat).view(batch_size,-1, channal) 
-                
                 h_tt = h 
                 cc = c 
                 
@@ -149,17 +140,13 @@ class Motion(nn.Module):
                     ht = torch.cat((h, h_tt),1) 
                     h_t.append(ht)
                 motion_feat = torch.cat(h_t,1) 
-        
                 motion_feat = self.maxpool(motion_feat) 
                 motion_feat = self.conv1(motion_feat)              
                 motion_feat = self.se2(motion_feat).view(batch_size*channal,-1) 
                 motion_feat = self.w0(motion_feat).view(batch_size,channal,-1) 
-                
                 motion = []
-                
-                
+        
                 #-----------------Motion-Vision Adapter-----------------#
-                
                 for i in range(batch_size):
                     node = self.w1(node_feat[i]).view(channal,-1) 
                     node_list = [node]
@@ -174,13 +161,10 @@ class Motion(nn.Module):
                 motion = torch.cat((h,motion),1)
                 motion = self.mapping(motion.permute(0, 3, 2, 1)).permute(0, 3, 2, 1)
                 h = h + torch.sigmoid(motion)
-                
                 output_inner.append(h)
                 
             layer_output = torch.stack(output_inner, dim=1)
-            
             cur_layer_input = layer_output
-            
             layer_output_list.append(layer_output)
             last_state_list.append([h, c])
 
