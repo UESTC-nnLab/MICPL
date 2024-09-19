@@ -144,9 +144,9 @@ class Motion(nn.Module):
                 motion_feat = self.conv1(motion_feat)              
                 motion_feat = self.se2(motion_feat).view(batch_size*channal,-1) 
                 motion_feat = self.w0(motion_feat).view(batch_size,channal,-1) 
-                motion = []
-        
+                
                 #-----------------Motion-Vision Adapter-----------------#
+                motion = []
                 for i in range(batch_size):
                     node = self.w1(node_feat[i]).view(channal,-1) 
                     node_list = [node]
